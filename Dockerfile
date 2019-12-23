@@ -10,7 +10,7 @@ WORKDIR source-to-image
 COPY . .
 
 RUN  make && \
-    install _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
+    install _output/local/bin/linux/${GOARCH}/s2i
 
 #
 # Runner Image
@@ -18,7 +18,9 @@ RUN  make && \
 
 FROM registry.access.redhat.com/ubi7/ubi-minimal
 
-COPY --from=builder /usr/local/bin/s2i /usr/local/bin
+ENV GOARCH="amd64"
+
+COPY --from=builder _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
 
 USER 10001
 
