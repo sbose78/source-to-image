@@ -4,14 +4,12 @@ ENV S2I_GIT_VERSION="" \
     S2I_GIT_MAJOR="" \
     S2I_GIT_MINOR=""
 
-ENV GOARCH="amd64"
 
 WORKDIR source-to-image
 COPY . .
 
-
-RUN  make && \
-    install _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
+ENV GOARCH="amd64"
+RUN make
 
 #
 # Runner Image
@@ -21,7 +19,7 @@ FROM registry.access.redhat.com/ubi7/ubi-minimal
 
 ENV GOARCH="amd64"
 
-COPY --from=builder _output/local/bin/linux/${GOARCH}/s2i   
+COPY --from=builder _output/local/bin/linux/${GOARCH}/s2i  /usr/local/bin/s2i
 
 USER 10001
 
