@@ -7,7 +7,7 @@ ENV S2I_GIT_VERSION="" \
 ENV GOARCH="amd64"
 
 WORKDIR source-to-image
-COPY . source-to-image
+COPY . .
 
 RUN  make && \
     install _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
