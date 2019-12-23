@@ -6,18 +6,20 @@ ENV S2I_GIT_VERSION="" \
 
 ENV GOARCH="amd64"
 
-COPY . $GOPATH/src/github.com/openshift/source-to-image
+WORKDIR source-to-image
+COPY . source-to-image
 
-RUN cd $GOPATH/src/github.com/openshift/source-to-image && \
-    make && \
+RUN  make && \
     install _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
 
 #
 # Runner Image
 #
 
-FROM registry.redhat.io/ubi8/ubi
+FROM registry.access.redhat.com/ubi7/ubi-minimal
 
 COPY --from=builder /usr/local/bin/s2i /usr/local/bin
+
+USER 10001
 
 ENTRYPOINT [ "/usr/local/bin/s2i" ]
