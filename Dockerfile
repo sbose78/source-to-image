@@ -9,7 +9,6 @@ ENV GOARCH="amd64"
 WORKDIR source-to-image
 COPY . .
 
-USER 10001
 
 RUN  make && \
     install _output/local/bin/linux/${GOARCH}/s2i /usr/local/bin
