@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"strings"
 
 	"github.com/containers/image/v5/transports/alltransports"
 	"github.com/containers/image/v5/types"
@@ -86,6 +87,10 @@ $ s2i generate docker://docker.io/centos/nodejs-10-centos7 Dockerfile.gen
 			}
 
 			adjustConfigWithImageLabels(cfg, imageLabels)
+
+			// leave out the transport from transport:reference
+			cfg.BuilderImage = strings.SplitN((cfg.BuilderImage), "://", 2)[1]
+
 			return generateDockerfile(cfg)
 		},
 	}
